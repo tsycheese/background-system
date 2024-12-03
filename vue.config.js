@@ -36,7 +36,14 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/res': {
+        target: 'http://127.0.0.1:7001'
+        // http://127.0.0.1:7001/res/captcha
+      }
+    }
+    // 放弃 mockjs
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

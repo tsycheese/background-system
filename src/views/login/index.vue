@@ -3,35 +3,37 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">个人空间管理系统</h3>
       </div>
 
-      <el-form-item prop="username">
+      <!-- 账号 -->
+      <el-form-item prop="loginId">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="loginId"
+          v-model="loginForm.loginId"
+          placeholder="请输入管理员账号"
+          name="loginId"
           type="text"
           tabindex="1"
           auto-complete="on"
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <!-- 密码 -->
+      <el-form-item prop="loginPwd">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
         <el-input
           :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
+          ref="loginPwd"
+          v-model="loginForm.loginPwd"
           :type="passwordType"
-          placeholder="Password"
-          name="password"
+          placeholder="请输入管理员密码"
+          name="loginPwd"
           tabindex="2"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
@@ -41,7 +43,30 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <!-- 验证码 -->
+      <div class="captcha-container">
+        <el-form-item prop="captcha">
+          <el-input
+            ref="captcha"
+            v-model="loginForm.captcha"
+            placeholder="请输入验证码"
+            name="captcha"
+            type="text"
+            tabindex="3"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <div class="captcha-img" v-html="captchaSvg" @click="generateCaptcha"></div>
+      </div>
+
+      <!-- 七天内免登录 -->
+      <div style="margin-bottom: 20px;">
+        <el-checkbox v-model="loginForm.checked">
+          七天内免登录
+        </el-checkbox>
+      </div>
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -53,37 +78,41 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
+import { getCaptcha } from '@/api/captcha';
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('Please enter the correct user name'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback(new Error('The password can not be less than 6 digits'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        loginId: '',
+        loginPwd: '',
+        captcha: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        loginId: [{ required: true, trigger: 'blur', message: '管理员账号不能为空' }],
+        loginPwd: [{ required: true, trigger: 'blur', message: '管理员密码不能为空' }],
+        captcha: [{ required: true, trigger: 'blur', message: '验证码不能为空' }]
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      captchaSvg: ''
+      // redirect: undefined
     }
   },
   watch: {
@@ -120,7 +149,16 @@ export default {
           return false
         }
       })
+    },
+    generateCaptcha() {
+      getCaptcha().then(res => {
+        console.log(res)
+        this.captchaSvg = res
+      })
     }
+  },
+  created() {
+    this.generateCaptcha()
   }
 }
 </script>
@@ -232,6 +270,22 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .captcha-container {
+    display: flex;
+    width: 100%;
+
+    .el-form-item {
+      width: 70%;
+      margin-right: 10px;
+    }
+
+    .captcha-img {
+      flex: 1;
+      height: 47px;
+    }
+
   }
 }
 </style>
