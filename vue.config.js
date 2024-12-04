@@ -40,6 +40,9 @@ module.exports = {
       '/res': {
         target: 'http://127.0.0.1:7001'
         // http://127.0.0.1:7001/res/captcha
+      },
+      '/api': {
+        target: 'http://127.0.0.1:7001'
       }
     }
     // 放弃 mockjs

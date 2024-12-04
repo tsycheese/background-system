@@ -79,7 +79,7 @@
 
 <script>
 // import { validUsername } from '@/utils/validate'
-import { getCaptcha } from '@/api/captcha';
+import { getCaptcha } from '@/api/captcha'
 
 export default {
   name: 'Login',
@@ -102,7 +102,8 @@ export default {
       loginForm: {
         loginId: '',
         loginPwd: '',
-        captcha: ''
+        captcha: '',
+        checked: false
       },
       loginRules: {
         loginId: [{ required: true, trigger: 'blur', message: '管理员账号不能为空' }],
@@ -111,8 +112,8 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      captchaSvg: ''
-      // redirect: undefined
+      captchaSvg: '',
+      redirect: undefined
     }
   },
   watch: {
@@ -131,19 +132,34 @@ export default {
         this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
+        // this.$refs.password.focus()
       })
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
+          const userInfo = {
+            loginId: this.loginForm.loginId.trim(),
+            loginPwd: this.loginForm.loginPwd,
+            captcha: this.loginForm.captcha,
+            remember: this.loginForm.checked ? 7 : 1
+          }
+          this.$store.dispatch('user/login', userInfo).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
-          }).catch(() => {
+          }).catch((error) => {
+            console.log(error)
+            this.$message.error(error)
             this.loading = false
+            this.generateCaptcha()
           })
+          // this.$store.dispatch('user/login', this.loginForm).then(() => {
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
@@ -152,7 +168,6 @@ export default {
     },
     generateCaptcha() {
       getCaptcha().then(res => {
-        console.log(res)
         this.captchaSvg = res
       })
     }

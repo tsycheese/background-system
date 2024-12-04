@@ -14,13 +14,17 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+    if (localStorage.getItem('authentication')) {
+      // 每次请求都携带token
+      config.headers.Authentication = localStorage.getItem('authentication')
     }
+
+    // if (store.getters.token) {
+    //   // let each request carry token
+    //   // ['X-Token'] is a custom headers key
+    //   // please modify it according to the actual situation
+    //   config.headers['X-Token'] = getToken()
+    // }
     return config
   },
   error => {
@@ -43,6 +47,11 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    if (response.headers.authentication) {
+      // 响应头里面如果有这个字段，我们需要将这个字段存储到 localstorage，之后的请求都需要将这个 token 带到服务器
+      // 这一步很重要，一定要将 token 存储到本地
+      localStorage.setItem('authentication', response.headers.authentication)
+    }
     const res = response.data
     return res
 
