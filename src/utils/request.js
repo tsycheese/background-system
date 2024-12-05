@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, setToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -14,10 +14,12 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    if (localStorage.getItem('authentication')) {
+    const token = getToken()
+    if (token) {
       // 每次请求都携带token
-      config.headers.Authentication = localStorage.getItem('authentication')
+      config.headers['Authorization'] = "Bearer " + token
     }
+
 
     // if (store.getters.token) {
     //   // let each request carry token
@@ -50,7 +52,7 @@ service.interceptors.response.use(
     if (response.headers.authentication) {
       // 响应头里面如果有这个字段，我们需要将这个字段存储到 localstorage，之后的请求都需要将这个 token 带到服务器
       // 这一步很重要，一定要将 token 存储到本地
-      localStorage.setItem('authentication', response.headers.authentication)
+      setToken(response.headers.authentication)
     }
     const res = response.data
     return res
