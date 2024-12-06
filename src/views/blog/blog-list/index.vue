@@ -22,6 +22,7 @@
             <el-image
               style="width: 100%"
               :src="`${SERVER_URL}${scope.row.thumb}`"
+              :preview-src-list="previewImages"
             />
             <span slot="reference" style="cursor: pointer">{{
               scope.row.title
@@ -104,6 +105,7 @@ export default {
       page: 1,
       limit: 10,
       total: 0,
+      previewImages: [],
       SERVER_URL
     }
   },
@@ -116,6 +118,9 @@ export default {
       console.log(res)
       this.blogs = res.data.rows
       this.total = res.data.total
+      this.previewImages = res.data.rows.map(item => {
+        return `${SERVER_URL}${item.thumb}`
+      })
     },
     handleCurrentChange(val) {
       this.page = val
