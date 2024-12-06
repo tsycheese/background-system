@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start()
 
@@ -26,7 +26,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           await store.dispatch('user/getInfo')
           next()
-        } catch(error) {
+        } catch (error) {
           // 移除 token，并跳转到登录页
           Message.error(error)
           await store.dispatch('user/resetToken')
@@ -50,11 +50,6 @@ router.beforeEach(async(to, from, next) => {
 
   // set page title
   document.title = getPageTitle(to.meta.title)
-
-
-
-
-
 
   // vue-element-admin 的权限管理
   // // determine whether the user has logged in

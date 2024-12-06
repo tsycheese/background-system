@@ -17,9 +17,8 @@ service.interceptors.request.use(
     const token = getToken()
     if (token) {
       // 每次请求都携带token
-      config.headers['Authorization'] = "Bearer " + token
+      config.headers['Authorization'] = 'Bearer ' + token
     }
-
 
     // if (store.getters.token) {
     //   // let each request carry token
@@ -41,7 +40,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-  */
+   */
 
   /**
    * Determine the request status by custom code

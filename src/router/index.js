@@ -47,12 +47,14 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '控制台', icon: 'dashboard', auth: true }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '控制台', icon: 'dashboard', auth: true }
+      }
+    ]
   },
 
   {
@@ -85,7 +87,7 @@ export const constantRoutes = [
         path: 'category',
         name: 'BlogCategory',
         component: () => import('@/views/blog/blog-category/index'),
-        meta: { title: '文章分类', icon: 'el-icon-menu', auth: true  }
+        meta: { title: '文章分类', icon: 'el-icon-menu', auth: true }
       },
       {
         path: 'add',
@@ -279,11 +281,12 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 

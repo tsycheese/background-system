@@ -14,7 +14,7 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const mutations = {
-  RESET_STATE: (state) => {
+  RESET_STATE: state => {
     Object.assign(state, getDefaultState())
   },
   // SET_TOKEN: (state, token) => {
@@ -35,22 +35,24 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      login(userInfo).then(response => {
-        if (typeof response === 'string') {
-          reject('验证码错误')
-        } else {
-          const { data } = response
-          if (!data) {
-            reject('用户名或密码错误')
+      login(userInfo)
+        .then(response => {
+          if (typeof response === 'string') {
+            reject('验证码错误')
           } else {
-            commit('SET_USER', data)
-            resolve()
+            const { data } = response
+            if (!data) {
+              reject('用户名或密码错误')
+            } else {
+              commit('SET_USER', data)
+              resolve()
+            }
           }
-        }
-        // resolve(res)
-      }).catch(error => {
-        reject(error)
-      })
+          // resolve(res)
+        })
+        .catch(error => {
+          reject(error)
+        })
       // login(userInfo).then(response => {
       //   const { data } = response
       //   commit('SET_TOKEN', data.token)
@@ -78,7 +80,6 @@ const actions = {
           }
         }
       })
-
 
       // getInfo(state.token).then(response => {
       //   const { data } = response
@@ -133,4 +134,3 @@ export default {
   mutations,
   actions
 }
-
