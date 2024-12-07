@@ -17,3 +17,11 @@ export function deleteBlog(id) {
     method: 'delete'
   })
 }
+
+export function postBlog(data) {
+  return request({
+    url: '/api/blog',
+    method: 'post',
+    data
+  })
+}

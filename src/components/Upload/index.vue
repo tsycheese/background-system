@@ -1,6 +1,6 @@
 <template>
   <div class="upload-container">
-    <h3>{{ title }}</h3>
+    <h3 v-if="title">{{ title }}</h3>
     <el-upload
       class="avatar-uploader"
       action="/api/upload"
@@ -23,7 +23,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '上传头像'
+      default: ''
     },
     image: {
       type: String,
@@ -82,5 +82,11 @@ export default {
   min-width: 178px;
   height: 178px;
   display: block;
+}
+</style>
+
+<style lang="scss" scoped>
+.upload-container {
+  display: inline-block;
 }
 </style>
