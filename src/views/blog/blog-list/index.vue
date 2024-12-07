@@ -82,10 +82,12 @@
     <div style="margin: 20px 0">
       <el-pagination
         background
-        layout="prev, pager, next, total"
+        layout="prev, pager, next, total, ->, sizes, jumper"
         :total="total"
         :page-size="limit"
+        :page-sizes="[5, 10, 15, 20]"
         @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
       >
       </el-pagination>
     </div>
@@ -103,7 +105,7 @@ export default {
     return {
       blogs: [],
       page: 1,
-      limit: 10,
+      limit: 5,
       total: 0,
       previewImages: [],
       SERVER_URL
@@ -124,6 +126,10 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val
+      this.fetchData()
+    },
+    handleSizeChange(val) {
+      this.limit = val
       this.fetchData()
     },
     handleDelete(blogId) {
