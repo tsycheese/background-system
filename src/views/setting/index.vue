@@ -1,15 +1,9 @@
 <template>
-  <div>
-    全局设置
-  </div>
+  <div>全局设置</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>

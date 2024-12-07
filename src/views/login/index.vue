@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h3 class="title">个人空间管理系统</h3>
       </div>
@@ -39,7 +45,9 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
         </span>
       </el-form-item>
 
@@ -56,23 +64,30 @@
             auto-complete="on"
           />
         </el-form-item>
-        <div class="captcha-img" v-html="captchaSvg" @click="generateCaptcha"></div>
+        <div
+          class="captcha-img"
+          @click="generateCaptcha"
+          v-html="captchaSvg"
+        ></div>
       </div>
 
       <!-- 七天内免登录 -->
-      <div style="margin-bottom: 20px;">
-        <el-checkbox v-model="loginForm.checked">
-          七天内免登录
-        </el-checkbox>
+      <div style="margin-bottom: 20px">
+        <el-checkbox v-model="loginForm.checked"> 七天内免登录 </el-checkbox>
       </div>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="handleLogin"
+        >Login</el-button
+      >
 
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
+        <span style="margin-right: 20px">username: admin</span>
         <span> password: any</span>
       </div>
-
     </el-form>
   </div>
 </template>
@@ -106,9 +121,15 @@ export default {
         checked: false
       },
       loginRules: {
-        loginId: [{ required: true, trigger: 'blur', message: '管理员账号不能为空' }],
-        loginPwd: [{ required: true, trigger: 'blur', message: '管理员密码不能为空' }],
-        captcha: [{ required: true, trigger: 'blur', message: '验证码不能为空' }]
+        loginId: [
+          { required: true, trigger: 'blur', message: '管理员账号不能为空' }
+        ],
+        loginPwd: [
+          { required: true, trigger: 'blur', message: '管理员密码不能为空' }
+        ],
+        captcha: [
+          { required: true, trigger: 'blur', message: '验证码不能为空' }
+        ]
       },
       loading: false,
       passwordType: 'password',
@@ -118,11 +139,14 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
+  },
+  created() {
+    this.generateCaptcha()
   },
   methods: {
     showPwd() {
@@ -145,15 +169,18 @@ export default {
             captcha: this.loginForm.captcha,
             remember: this.loginForm.checked ? 7 : 1
           }
-          this.$store.dispatch('user/login', userInfo).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch((error) => {
-            console.log(error)
-            this.$message.error(error)
-            this.loading = false
-            this.generateCaptcha()
-          })
+          this.$store
+            .dispatch('user/login', userInfo)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(error => {
+              console.log(error)
+              this.$message.error(error)
+              this.loading = false
+              this.generateCaptcha()
+            })
           // this.$store.dispatch('user/login', this.loginForm).then(() => {
           //   this.$router.push({ path: this.redirect || '/' })
           //   this.loading = false
@@ -171,9 +198,6 @@ export default {
         this.captchaSvg = res
       })
     }
-  },
-  created() {
-    this.generateCaptcha()
   }
 }
 </script>
@@ -182,8 +206,8 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
+$bg: #283443;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -226,9 +250,9 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;
@@ -300,7 +324,6 @@ $light_gray:#eee;
       flex: 1;
       height: 47px;
     }
-
   }
 }
 </style>

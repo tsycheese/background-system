@@ -1,15 +1,9 @@
 <template>
-  <div>
-    评论管理
-  </div>
+  <div>评论管理</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>

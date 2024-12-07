@@ -1,15 +1,9 @@
 <template>
-  <div>
-    关于我
-  </div>
+  <div>关于我</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>
