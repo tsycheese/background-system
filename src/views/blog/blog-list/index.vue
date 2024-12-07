@@ -58,7 +58,11 @@
         width="250px"
         prop="scanNumber"
         align="center"
-      />
+      >
+        <template slot-scope="scope">
+          {{ formatDate(scope.row.createDate) }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scope">
           <el-tooltip placement="top">
@@ -99,6 +103,7 @@
 <script>
 import { SERVER_URL } from '@/urlConfig'
 import { getBlogs, deleteBlog } from '@/api/blog'
+import { formatDate } from '@/utils/tools'
 
 export default {
   data() {
@@ -115,6 +120,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    formatDate,
     async fetchData() {
       const res = await getBlogs(this.page, this.limit)
       console.log(res)
