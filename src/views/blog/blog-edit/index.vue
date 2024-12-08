@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-loading="loading" class="app-container">
     <div class="block">文章标题</div>
     <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
 
@@ -28,7 +28,8 @@
     </el-select>
 
     <div class="block"></div>
-    <el-button type="primary" @click="handleSubmit">发布文章</el-button>
+    <el-button type="primary" @click="handleSubmit">确认修改</el-button>
+    <el-button @click="handleCancel">取消</el-button>
   </div>
 </template>
 
@@ -37,7 +38,7 @@ import '@toast-ui/editor/dist/toastui-editor.css'
 import { Editor } from '@toast-ui/vue-editor'
 import Upload from '@/components/Upload'
 import { getBlogTypes } from '@/api/blogType'
-import { postBlog } from '@/api/blog'
+import { getBlogById, updateBlog } from '@/api/blog'
 
 export default {
   components: {
@@ -56,11 +57,15 @@ export default {
         thumb: '',
         categoryId: ''
       },
-      blogTypes: []
+      blogTypes: [],
+      blogId: '',
+      loading: false
     }
   },
   created() {
     this.fetchBlogTypes()
+    this.blogId = this.$route.query.blogId
+    this.fetchBlogInfo()
   },
   methods: {
     handleImageUpload(url) {
@@ -69,6 +74,20 @@ export default {
     async fetchBlogTypes() {
       const res = await getBlogTypes()
       this.blogTypes = res.data
+    },
+    async fetchBlogInfo() {
+      this.loading = true
+      const res = await getBlogById(this.blogId)
+      if (typeof res === 'string' || res.code !== 0) {
+        this.$message.error('获取博客信息失败！')
+        this.loading = false
+        return
+      }
+      Object.assign(this.form, res.data)
+      this.form.categoryId = res.data.category?.id
+      this.form.editorContent = res.data.htmlContent
+      this.$refs.editor.invoke('setHTML', this.form.editorContent)
+      this.loading = false
     },
     handleEditorBlur() {
       this.form.editorContent = this.$refs.editor.invoke('getHTML')
@@ -105,17 +124,19 @@ export default {
         htmlContent: html,
         markdownContent: markdown
       }
-      console.log(obj)
       try {
-        const res = await postBlog(obj)
+        const res = await updateBlog(this.blogId, obj)
         if (typeof res === 'string' || res.code !== 0) {
-          throw new Error('提交失败')
+          throw new Error('修改失败')
         }
-        this.$message.success('提交成功！')
-        this.$router.push({ path: '/blog/list' })
+        this.$message.success('修改成功！')
+        this.$router.push({ path: this.$route.query.redirect })
       } catch (error) {
         this.$message.error(error.message)
       }
+    },
+    handleCancel() {
+      this.$router.push({ path: this.$route.query.redirect })
     }
   }
 }

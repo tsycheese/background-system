@@ -50,7 +50,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.category.name }}
+          {{ scope.row.category ? scope.row.category.name : '未分类' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -67,7 +67,12 @@
         <template slot-scope="scope">
           <el-tooltip placement="top">
             <div slot="content">编辑</div>
-            <el-button type="primary" icon="el-icon-edit" circle />
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              circle
+              @click="handleEdit(scope.row.id)"
+            />
           </el-tooltip>
           <el-tooltip placement="top">
             <div slot="content">删除</div>
@@ -167,6 +172,12 @@ export default {
             })
           }
         })
+    },
+    handleEdit(blogId) {
+      this.$router.push({
+        path: '/blog/edit',
+        query: { blogId, redirect: '/blog/list' }
+      })
     }
   }
 }

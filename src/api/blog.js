@@ -25,3 +25,18 @@ export function postBlog(data) {
     data
   })
 }
+
+export function getBlogById(id) {
+  return request({
+    url: `/api/blog/${id}`,
+    method: 'get'
+  })
+}
+
+export function updateBlog(id, data) {
+  return request({
+    url: `/api/blog/${id}`,
+    method: 'put',
+    data
+  })
+}
