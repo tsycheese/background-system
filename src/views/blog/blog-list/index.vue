@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div v-loading="loading" class="app-container">
     <!-- 表格数据 -->
     <el-table :data="blogs" style="width: 100%" border>
       <el-table-column label="序号" width="50" align="center">
@@ -113,7 +113,8 @@ export default {
       limit: 5,
       total: 0,
       previewImages: [],
-      SERVER_URL
+      SERVER_URL,
+      loading: false
     }
   },
   created() {
@@ -122,13 +123,14 @@ export default {
   methods: {
     formatDate,
     async fetchData() {
+      this.loading = true
       const res = await getBlogs(this.page, this.limit)
-      console.log(res)
       this.blogs = res.data.rows
       this.total = res.data.total
       this.previewImages = res.data.rows.map(item => {
         return `${SERVER_URL}${item.thumb}`
       })
+      this.loading = false
     },
     handleCurrentChange(val) {
       this.page = val
