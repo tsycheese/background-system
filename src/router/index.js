@@ -129,7 +129,7 @@ export const constantRoutes = [
         name: 'ProjectEdit',
         hidden: true,
         component: () => import('@/views/project/project-edit/index'),
-        meta: { title: '添加项目', auth: true }
+        meta: { title: '编辑项目', auth: true }
       }
     ]
   },
