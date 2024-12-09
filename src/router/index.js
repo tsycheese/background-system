@@ -123,6 +123,13 @@ export const constantRoutes = [
         name: 'ProjectAdd',
         component: () => import('@/views/project/project-add/index'),
         meta: { title: '添加项目', icon: 'el-icon-link', auth: true }
+      },
+      {
+        path: 'edit',
+        name: 'ProjectEdit',
+        hidden: true,
+        component: () => import('@/views/project/project-edit/index'),
+        meta: { title: '添加项目', auth: true }
       }
     ]
   },
