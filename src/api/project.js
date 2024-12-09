@@ -14,3 +14,10 @@ export function postProject(data) {
     data
   })
 }
+
+export function deleteProject(id) {
+  return request({
+    url: `/api/project/${id}`,
+    method: 'delete'
+  })
+}

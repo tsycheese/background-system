@@ -13,7 +13,13 @@
         align="center"
         prop="name"
       />
-      <el-table-column label="项目描述" prop="description" />
+      <el-table-column label="项目描述">
+        <template slot-scope="scope">
+          <p v-for="(item, index) in scope.row.description" :key="index">
+            {{ item }}
+          </p>
+        </template>
+      </el-table-column>
       <el-table-column label="项目描述" width="300" align="center">
         <template slot-scope="scope">
           <el-image
@@ -57,7 +63,7 @@
 </template>
 
 <script>
-import { getProjects } from '@/api/project'
+import { getProjects, deleteProject } from '@/api/project'
 import { SERVER_URL } from '@/urlConfig'
 
 export default {
@@ -91,6 +97,34 @@ export default {
           projectId: id
         }
       })
+    },
+    handleDelete(id) {
+      this.$confirm('确定删除此项目吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          await deleteProject(id)
+          this.fetchProjects()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        .catch(error => {
+          if (error === 'cancel') {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '删除失败'
+            })
+          }
+        })
     }
   }
 }
