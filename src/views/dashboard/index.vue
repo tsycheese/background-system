@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <h1>欢迎使用个人博客后台</h1>
   </div>
 </template>
 
