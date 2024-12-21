@@ -71,8 +71,13 @@ export default {
     async handleSubmit() {
       if (!this.validateForm()) return
       const data = {
-        ...this.form,
-        description: this.form.description.split(',')
+        title: this.form.title,
+        description: this.form.description.split(','),
+        url: this.form.url,
+        github: this.form.github,
+        thumb: this.form.thumb,
+        order: this.form.order,
+        name: this.form.name
       }
       try {
         const res = await postProject(data)

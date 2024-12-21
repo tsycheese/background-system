@@ -20,7 +20,7 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column label="项目描述" width="300" align="center">
+      <el-table-column label="项目头图" width="300" align="center">
         <template slot-scope="scope">
           <el-image
             style="height: 100px"

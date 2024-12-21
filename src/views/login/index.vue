@@ -195,7 +195,12 @@ export default {
     },
     generateCaptcha() {
       getCaptcha().then(res => {
-        this.captchaSvg = res
+        // 这里 res 是一个图片，content-type 为 image/png
+        const img = document.createElement('img')
+        img.src = URL.createObjectURL(res.data)
+        this.captchaSvg = img.outerHTML
+
+        // this.captchaSvg = res
       })
     }
   }

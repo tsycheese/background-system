@@ -1,12 +1,13 @@
 import request from '@/utils/request'
 
-export function getBlogs(page = 1, limit = 10) {
+export function getBlogs(page = 1, limit = 10, categoryId = -1) {
   return request({
     url: `/api/blog`,
     method: 'get',
     params: {
       page,
-      limit
+      limit,
+      categoryId
     }
   })
 }

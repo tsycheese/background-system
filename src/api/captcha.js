@@ -1,8 +1,9 @@
-import request from '@/utils/request'
+import axios from 'axios'
 
 export function getCaptcha() {
-  return request({
+  return axios({
     url: '/res/captcha',
-    method: 'get'
+    method: 'get',
+    responseType: 'blob'
   })
 }

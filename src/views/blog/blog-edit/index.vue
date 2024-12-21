@@ -116,13 +116,12 @@ export default {
         return
       }
       const html = this.$refs.editor.invoke('getHTML')
-      const markdown = this.$refs.editor.invoke('getMarkdown')
       const obj = {
-        ...this.form,
-        createDate: Date.now(),
-        toc: [],
-        htmlContent: html,
-        markdownContent: markdown
+        title: this.form.title,
+        description: this.form.description,
+        thumb: this.form.thumb,
+        categoryId: this.form.categoryId,
+        htmlContent: html
       }
       try {
         const res = await updateBlog(this.blogId, obj)
